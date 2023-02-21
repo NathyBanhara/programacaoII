@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+     <div class="card crud-demo">
+    <h:form id="form">
+        <p:growl id="messages" showDetail="true" />
+
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="New" icon="pi pi-plus" actionListener="#{crudView.openNew}"
+                    update=":dialogs:manage-product-content" oncomplete="PF('manageProductDialog').show()"
+                    styleClass="ui-button-success" style="margin-right: .5rem">
+                    <p:resetInput target=":dialogs:manage-product-content" />
+                </p:commandButton>
+                <p:commandButton id="delete-products-button" value="#{crudView.deleteButtonMessage}"
+                    icon="pi pi-trash" actionListener="#{crudView.deleteSelectedProducts}"
+                    styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedProducts()}" update="@this">
+                    <p:confirm header="Confirmation" message="Delete the selected products?"
+                        icon="pi pi-exclamation-triangle" />
+                </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:fileUpload mode="simple" skinSimple="true" label="Import" chooseIcon="pi pi-download" />
+                <p:commandButton value="Export" icon="pi pi-upload" styleClass="ui-button-help" ajax="false">
+                    <p:dataExporter type="pdf" target="dt-products" fileName="products" />
+                </p:commandButton>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <p:dataTable id="dt-produtores" widgetVar="dtProdutores" var="produtor" value="#{crudView.produtores}"
+            reflow="true" styleClass="produtores-table" selection="#{crudView.selectedProductores}"
+            rowKey="#{produtor.cpf}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+            <f:facet name="header">
+                <div class="produtores-table-header">
+                    <span style="font-weight: bold">PRODUTORES</span>
+                    <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                        <p:inputText id="globalFilter" onkeyup="PF('dtProdutores').filter()" placeholder="Search" />
+                    </span>
+                </div>
+            </f:facet>
+
+            <p:ajax event="rowSelect" update=":form:delete-produtores-button" />
+            <p:ajax event="rowUnselect" update=":form:delete-produtores-button" />
+            <p:ajax event="rowSelectCheckbox" update=":form:delete-produtores-button" />
+            <p:ajax event="rowUnselectCheckbox" update=":form:delete-produtores-button" />
+            <p:ajax event="toggleSelect" update=":form:delete-produtores-button" />
+
+            <p:column selectionMode="multiple" exportable="false"></p:column>
+
+            <p:column headerText="CPF" sortBy="#{produtor.cpf}" filterBy="#{produtor.cpf}">
+                <h:outputText value="#{produtor.cpf}" />
+            </p:column>
+            <p:column headerText="Nome" sortBy="#{produtor.nome}" filterBy="#{produtor.nome}">
+                <h:outputText value="#{produtor.nome}" />
+            </p:column>
+            <p:column headerText="Email" sortBy="#{produtor.email}" filterBy="#{produtor.email}">
+                <h:outputText value="#{produtor.email}" />
+            </p:column>
+            <p:column headerText="Data de nascimento" sortBy="#{produtor.dt_nasc}" filterBy="#{produtor.dt_nasc}">
+                <h:outputText value="#{produtor.dt_nasc}" />
+            </p:column>
+            <p:column exportable="false">
+                <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-produtor-content"
+                    oncomplete="PF('manageProductDialog').show()"
+                    styleClass="edit-button rounded-button ui-button-success" process="@this">
+                    <f:setPropertyActionListener value="#{produtor}" target="#{crudView.selectedProdutor}" />
+                    <p:resetInput target=":dialogs:manage-produtor-content" />
+                </p:commandButton>
+                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                 process="@this"
+                                 oncomplete="PF('deleteProdutorDialog').show()">
+                    <f:setPropertyActionListener value="#{produtor}" target="#{crudView.selectedProdutor}" />
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+
+    <h:form id="dialogs">
+        <p:dialog header="Produtor Details" showEffect="fade" modal="true" widgetVar="manageProdutorDialog"
+            responsive="true">
+            <p:outputPanel id="manage-produtor-content" class="ui-fluid">
+                <p:outputPanel rendered="#{not empty crudView.selectedProdutor}">
+                    <p:graphicImage name="images/produtor/#{crudView.selectedProdutor.image}" library="demo"
+                        styleClass="produtor-image" rendered="#{not empty crudView.selectedProdutor.image}" />
+                    <div class="field">
+                        <p:outputLabel for="nome">Nome</p:outputLabel>
+                        <p:inputText id="nome" value="#{crudView.selectedProdutor.nome}" required="true" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="email">Email</p:outputLabel>
+                        <p:inputTextarea id="email" value="#{crudView.selectedProdutor.email}" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="dt_nasc">Data de Nascimento</p:outputLabel>
+                        <p:selectOneRadio id="dt_nasc" value="#{crudView.selectedProdutor.dt_nasc}"
+                            layout="responsive" columns="2">
+                            <f:selectItem itemLabel="Accessories" itemValue="Accessories" />
+                            <f:selectItem itemLabel="Clothing" itemValue="Clothing" />
+                            <f:selectItem itemLabel="Electronics" itemValue="Electronics" />
+                            <f:selectItem itemLabel="Fitness" itemValue="Fitness" />
+                        </p:selectOneRadio>
+                    </div>
+                </p:outputPanel>
+            </p:outputPanel>
+
+            <f:facet name="footer">
+                <p:commandButton value="Save" icon="pi pi-check" actionListener="#{crudView.saveProdutor}"
+                    update="manage-produtor-content" process="manage-produtor-content @this" />
+                <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProdutorDialog').hide()"
+                    class="ui-button-secondary" type="button" />
+            </f:facet>
+        </p:dialog>
+
+        <p:confirmDialog widgetVar="deleteProdutorDialog" showEffect="fade" width="300"
+            message="Remover o produtor?" header="Confirm" severity="warn">
+            <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudView.deleteProdutor}"
+                process="@this" update=":form:delete-produtor-button"
+                oncomplete="PF('deleteProdutorDialog').hide()" />
+            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                onclick="PF('deleteProdutorDialog').hide()" />
+        </p:confirmDialog>
+
+        <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                icon="pi pi-times" />
+        </p:confirmDialog>
+    </h:form>
+</div>
+    </ui:define>
+</ui:composition>

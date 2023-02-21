@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+        <h1>Login</h1>
+        <h:form>
+        	<h:panelGrid columns="2">
+        		<h5>CPF:</h5>
+    			<p:inputText value="#{loginController.produtor.cpf}"/>
+        	<h5>Senha:</h5>
+        	<p:password value="#{loginController.produtor.senha}"/>
+        	</h:panelGrid>
+        	<p>
+        		<h:panelGrid columns="2">
+        			<p:button value="Login" action="#{loginController.login}"/>
+        			<p:messages styleClass="messages" errorClass="invalid" infoClass="valid" warnClass="warning" globalOnly="true" />
+            	</h:panelGrid>
+            </p>
+			<!-- 
+            <h:panelGrid columns="2">
+                <h:outputLabel for="usuario" value="Usuario:" />
+                <h:inputText id="usuario" value="#{loginController.usuario.usuario}" />
+
+				<h:outputLabel for="senha" value="Senha:" />
+                <h:inputText id="senha" value="#{loginController.usuario.senha}" />	
+            </h:panelGrid>
+			  -->
+            <p>
+                <h:panelGrid columns="2">
+                    <h:commandButton value="Login" action="#{loginController.login}"/>
+                    <h:messages styleClass="messages" errorClass="invalid" infoClass="valid" warnClass="warning" globalOnly="true" />
+                </h:panelGrid>
+            </p>
+
+        </h:form>
+    </ui:define>
+</ui:composition>
