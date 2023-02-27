@@ -1,5 +1,7 @@
 package br.edu.projeto.util;
 
+import java.sql.Date;
+
 import javax.inject.Inject;
 import javax.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import javax.servlet.ServletContextEvent;
@@ -23,13 +25,15 @@ public class AdminSetup implements ServletContextListener {
     private Produtor admin;
     
     public void contextInitialized(ServletContextEvent event) {
-        if (produtorDAO.ehProdutorUnico("11111111111")){ 	
+        if (produtorDAO.ehProdutorUnico("86803717003")){ 	
 	    	admin = new Produtor();
+	    	admin.setCpf("86803717003");
 	        admin.setEmail("admin@admin.com");
-	        String senhaPadrao = "admin";
+	        String senhaPadrao = "admin123";
 	        admin.setSenha(passwordHash.generate(senhaPadrao.toCharArray()));
 	        admin.setNome("admin");
-	        admin.setData_nasc("02/10/2001");
+	        String data_nascimento = "2001-10-02";
+	        admin.setData_nascimento_string("2001-10-02");
 	        produtorDAO.salvar(admin);
         }
     }

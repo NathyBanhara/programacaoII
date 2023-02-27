@@ -1,16 +1,22 @@
 package br.edu.projeto.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateful;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import br.edu.projeto.model.Area;
+import br.edu.projeto.model.Produtor;
+import br.edu.projeto.model.Safra;
+import br.edu.projeto.util.SafraId;
 
 @Stateful
 public class AreaDAO implements Serializable
@@ -32,10 +38,34 @@ public class AreaDAO implements Serializable
         return false;
     }
 	
+	public Area encontrarArea(String ender)
+	{
+		List<Area> area = new ArrayList<Area>();
+		TypedQuery<Area> q = em.createQuery("SELECT a FROM Area a WHERE a.ender = ?1", Area.class);
+		q.setParameter(1, ender);
+		area.addAll(q.getResultList());
+		return area.get(0);
+	}
+	
+	public Safra acharSafra()
+	{
+		Integer safraId = SafraId.getSafra();
+		List<Safra> safra = new ArrayList<Safra>();
+		TypedQuery<Safra> q = em.createQuery("SELECT s FROM Safra s WHERE s.idSafra = ?1", Safra.class);
+		q.setParameter(1, safraId);
+		safra.addAll(q.getResultList());
+		return safra.get(0);
+	}
+	
 	//Query usando a linguagem HQL do Hibernate
 	//Idnicada para consultas simples
 	public List<Area> listarTodos() {
-	    return em.createQuery("SELECT a FROM Area a ", Area.class).getResultList();      
+		Safra s = acharSafra();
+		List<Area> areas = new ArrayList<Area>();
+		TypedQuery<Area> q = em.createQuery("SELECT a FROM Area a WHERE a.safra = ?1", Area.class);
+		q.setParameter(1, s);
+		areas.addAll(q.getResultList());
+	    return areas;      
 	}
 
 	public void salvar(Area a) {

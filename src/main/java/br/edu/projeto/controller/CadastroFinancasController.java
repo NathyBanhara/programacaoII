@@ -41,7 +41,7 @@ public class CadastroFinancasController implements Serializable
 	  	{
 	  		try
 	  		{
-				this.facesContext.getExternalContext().redirect("login-error.xhtml");
+				this.facesContext.getExternalContext().redirect("error.xhtml");
 			} catch (IOException e) {e.printStackTrace();}
 	  	}
 	  	this.listaFinancas = financasDAO.listarTodos();
@@ -58,6 +58,7 @@ public class CadastroFinancasController implements Serializable
 	//Chama método de verificação se usuário é válido (regras negociais)
 	//Limpa lista de permissões de usuário (é mais simples limpar e adicionar todas novamente depois)
 	  		//Adiciona todas as permissões selecionadas em tela
+		this.financas.setSafra(this.financasDAO.acharSafra());
 		try
 		{
 			if (this.financas.getIdFinancas() == null)
@@ -68,13 +69,13 @@ public class CadastroFinancasController implements Serializable
 			else
 			{
 				this.financasDAO.atualizar(this.financas);
-				this.facesContext.addMessage(null, new FacesMessage("Financas Atualizada"));
+				this.facesContext.addMessage(null, new FacesMessage("Finanças Atualizada"));
 			}
 			//Após salvar usuário é necessário recarregar lista que popula tabela com os novos dados
 			this.listaFinancas = financasDAO.listarTodos();
 			//Atualiza e executa elementos Javascript na tela assincronamente
-			PrimeFaces.current().executeScript("PF('usuarioDialog').hide()");
-			PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+			PrimeFaces.current().executeScript("PF('financasDialog').hide()");
+			PrimeFaces.current().ajax().update("form:messages", "form:dt-financas");
 		}
 		catch (Exception e)
 		{
@@ -93,21 +94,24 @@ public class CadastroFinancasController implements Serializable
 		        //Limpa seleção de usuário
 				this.financas = null;
 		        this.facesContext.addMessage(null, new FacesMessage("Financas Removida"));
-		        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+		        PrimeFaces.current().ajax().update("form:messages", "form:dt-financas");
 	      } catch (Exception e) {
 	          String errorMessage = getMensagemErro(e);
 	          this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
 	      }
 		}
-/*
+
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.permissoesSelecionadas.clear();
-		for (TipoPermissao p: this.usuario.getPermissoes())
-			this.permissoesSelecionadas.add(p.getId());
-		this.usuario.setSenha("");
+		this.financas.setData_pag_string(null);
+		this.financas.setData_rec_string(null);
+		this.financas.setData_real_string(null);
+		this.financas.setDescr("");
+		this.financas.setNomeFor("");
+		this.financas.setObs("");
+		this.financas.setValor(0);
 	}
-*/
+
 		
 	//Captura mensagem de erro das validações do Hibernate
 	private String getMensagemErro(Exception e) {

@@ -34,10 +34,10 @@ public class LoginController {
 
     @PostConstruct
     public void inicializarProdutor() {
-        produtor = new Produtor();
+    	produtor = new Produtor();
     }
 
-    public void login() throws IOException{
+    public void login() throws IOException {
     	if (facesContext.getExternalContext().getAuthType() != null) {
     		try {
     			throw new Exception();       	
@@ -51,7 +51,16 @@ public class LoginController {
 	    	        	(HttpServletResponse)facesContext.getExternalContext().getResponse(),
 	    	            AuthenticationParameters.withParams().credential(credential));
 	    	if (status.equals(AuthenticationStatus.SUCCESS))
-	    		facesContext.getExternalContext().redirect("cadastro_produtor.xhtml");
+	    	{
+	    		if (produtor.getCpf().equals("86803717003"))
+	    		{
+	    			facesContext.getExternalContext().redirect("cadastro_produtor.xhtml");
+	    		}
+	    		else 
+	    		{
+	    			facesContext.getExternalContext().redirect("cadastrar_safra.xhtml");
+	    		}
+	    	}
 	    	else if (status.equals(AuthenticationStatus.SEND_FAILURE)) {
 	    		produtor = new Produtor();
 	    		try {

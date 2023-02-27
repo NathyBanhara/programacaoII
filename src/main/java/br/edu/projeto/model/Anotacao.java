@@ -1,10 +1,18 @@
 package br.edu.projeto.model;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -24,9 +32,8 @@ public class Anotacao {
 
     //Indica validações e mensagens de erro para atributo
     @NotNull
-    @NotEmpty
     @Column(name = "data_inicio")
-    private String dataInicio;
+    private LocalDate dataInicio;
     
 	//Indica validações e mensagens de erro para atributo
 	@NotNull
@@ -40,9 +47,12 @@ public class Anotacao {
 	private String texto;
 	
 	@Column(name = "data_term")
-	private String dataTerm;
+	private LocalDate dataTerm;
 	
-	@ManyToOne
+	@ManyToOne(cascade  = CascadeType.MERGE)
+	@JoinColumn(name = "safra",
+	foreignKey = @ForeignKey(name = "fk_anotacao_safra")
+	)
 	private Safra safra;
 
 	public Safra getSafra() {
@@ -61,12 +71,29 @@ public class Anotacao {
 		this.idAnotacao = idAnotacao;
 	}
 
-	public String getDataInicio() {
+	public LocalDate getDataInicio() {
 		return dataInicio;
 	}
 
-	public void setDataInicio(String dataInicio) {
+	public void setDataInicio(LocalDate dataInicio) {
 		this.dataInicio = dataInicio;
+	}
+	
+	public void setData_inicio_string(String dataInicio)
+	{
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+		LocalDate data = LocalDate.parse(dataInicio, formato);
+		this.dataInicio = data;
+	}
+	
+	public String getData_inicio_string()
+	{
+		if (this.dataInicio == null)
+		{
+			return "";
+		}
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return formato.format(this.dataInicio);
 	}
 
 	public String getDescr() {
@@ -85,11 +112,35 @@ public class Anotacao {
 		this.texto = texto;
 	}
 
-	public String getDataTerm() {
+	public LocalDate getDataTerm() {
 		return dataTerm;
 	}
 
-	public void setDataTerm(String dataTerm) {
+	public void setDataTerm(LocalDate dataTerm) {
 		this.dataTerm = dataTerm;
+	}
+	
+	public void setData_term_string(String dataTerm)
+	{
+		if (dataTerm.equals(""))
+		{
+			this.dataTerm = null;
+		}
+		else
+		{
+			DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+			LocalDate data = LocalDate.parse(dataTerm, formato);
+			this.dataTerm = data;
+		}
+	}
+	
+	public String getData_term_string()
+	{
+		if (this.dataTerm == null)
+		{
+			return "";
+		}
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return formato.format(this.dataTerm);
 	}
 }

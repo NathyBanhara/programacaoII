@@ -2,11 +2,13 @@ package br.edu.projeto.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -14,7 +16,9 @@ import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
 import br.edu.projeto.dao.AreaDAO;
+import br.edu.projeto.dao.SafraDAO;
 import br.edu.projeto.model.Area;
+import br.edu.projeto.model.Safra;
 
 
 //Escopo do objeto da classe (Bean)
@@ -39,7 +43,20 @@ public class CadastroAreaController implements Serializable {
 	
 	private Area area;
 	
+	@Inject
+    private SafraDAO safraDAO;
+	
 	private List<Area> listaAreas;
+	
+	public List<SelectItem> getSafras() {
+		return safras;
+	}
+
+	public void setSafras(List<SelectItem> safras) {
+		this.safras = safras;
+	}
+
+	private List<SelectItem> safras;
 	
 	//Anotação que força execução do método após o construtor da classe ser executado
     @PostConstruct
@@ -50,11 +67,18 @@ public class CadastroAreaController implements Serializable {
     	//!this.facesContext.getExternalContext().getRemoteUser() -> retorna o login do usuário
     		{
     		try {
-				this.facesContext.getExternalContext().redirect("login-error.xhtml");
+				this.facesContext.getExternalContext().redirect("error.xhtml");
 			} catch (IOException e) {e.printStackTrace();}
     	}
     	//Inicializa elementos importantes
     	this.listaAreas = areaDAO.listarTodos();
+    	this.safras = new ArrayList<SelectItem>();
+    	for (Safra s: this.safraDAO.listarTodos()) {
+    		String descrSafra = s.getTipoCul() + s.getAno().toString();
+    		//O primeiro elemento é a chave (oculta) e o segundo a descrição que aparecerá para o usuário em tela
+    		SelectItem i = new SelectItem(s.getIdSafra(), descrSafra);		
+    		this.safras.add(i);
+    	}
     }
 	
     //Chamado pelo botão novo
@@ -66,6 +90,7 @@ public class CadastroAreaController implements Serializable {
 	public void salvar() {
 		//Chama método de verificação se usuário é válido (regras negociais)
         if (areaValido()) {
+        	this.area.setSafra(this.areaDAO.acharSafra());
         	try {
         		if (this.area.getEnder() == null) {
 		        	this.areaDAO.salvar(this.area);
@@ -77,8 +102,8 @@ public class CadastroAreaController implements Serializable {
         		//Após salvar usuário é necessário recarregar lista que popula tabela com os novos dados
 		        this.listaAreas = areaDAO.listarTodos();
 		        //Atualiza e executa elementos Javascript na tela assincronamente
-			    PrimeFaces.current().executeScript("PF('usuarioDialog').hide()");
-			    PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+			    PrimeFaces.current().executeScript("PF('areaDialog').hide()");
+			    PrimeFaces.current().ajax().update("form:messages", "form:dt-areas");
 	        } catch (Exception e) {
 	            String errorMessage = getMensagemErro(e);
 	            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
@@ -104,20 +129,18 @@ public class CadastroAreaController implements Serializable {
 	        //Limpa seleção de usuário
 			this.area = null;
 	        this.facesContext.addMessage(null, new FacesMessage("Área Removida"));
-	        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+	        PrimeFaces.current().ajax().update("form:messages", "form:dt-areas");
         } catch (Exception e) {
             String errorMessage = getMensagemErro(e);
             this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
         }
 	}
 	
-	/*//Chamado pelo botão alterar da tabela
+	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.permissoesSelecionadas.clear();
-		for (TipoPermissao p: this.usuario.getPermissoes())
-			this.permissoesSelecionadas.add(p.getId());
-		this.usuario.setSenha("");
-	}*/
+		this.area.setNome("");
+		this.area.setQuant_hec(0);
+	}
 	
 	//Captura mensagem de erro das validações do Hibernate
 	private String getMensagemErro(Exception e) {

@@ -3,10 +3,13 @@ package br.edu.projeto.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -30,28 +33,18 @@ public class Area
 	@NotNull
 	private float quant_hec;
 	
-	@ManyToOne
-	private Produtor produtor;
-    
-    //No relacionamento ManytoMany uma das classes deve ser "dominada" pela outra
-    //A classe dominada possui o parâmetro mappedBy, essa classe nunca persistirá alterações na classe/tabela dominante
-    @ManyToMany(mappedBy = "areaSafra", fetch = FetchType.EAGER)
-    private List<Safra> safras = new ArrayList<Safra>();
+	@ManyToOne(cascade  = CascadeType.MERGE)
+	@JoinColumn(name = "safra",
+	foreignKey = @ForeignKey(name = "fk_area_safra")
+	)
+	private Safra safra;
 
-	public Produtor getProdutor() {
-		return produtor;
+	public Safra getSafra() {
+		return safra;
 	}
 
-	public List<Safra> getSafras() {
-		return safras;
-	}
-
-	public void setSafras(List<Safra> safras) {
-		this.safras = safras;
-	}
-
-	public void setProdutor(Produtor produtor) {
-		this.produtor = produtor;
+	public void setSafra(Safra safra) {
+		this.safra = safra;
 	}
 
 	public String getEnder() {
@@ -77,8 +70,5 @@ public class Area
 	public void setQuant_hec(float quant_hec) {
 		this.quant_hec = quant_hec;
 	}
-	
-	//produtor varchar(11) not null,
-	
 	
 }

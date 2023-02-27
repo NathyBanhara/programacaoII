@@ -1,8 +1,18 @@
 package br.edu.projeto.model;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -29,7 +39,7 @@ public class Produtor
 	
 	@NotNull
 	@NotEmpty
-	@Size(min = 6, max = 15, message = "Mensagem customizada de erro! A senha do usuário deve ter no minimo 6 caracteres e no máximo 15.")
+	@Size(min = 6, message = "Mensagem customizada de erro! A senha do usuário deve ter no minimo 6 caracteres.")
 	private String senha;
 	
 	@NotNull
@@ -38,9 +48,8 @@ public class Produtor
 	private String email;
 	
 	@NotNull
-	@NotEmpty
-	private String data_nasc;
-
+	private LocalDate data_nasc;
+	
 	public String getCpf() {
 		return cpf;
 	}
@@ -73,12 +82,34 @@ public class Produtor
 		this.email = email;
 	}
 
-	public String getData_nasc() {
+	public LocalDate getData_nasc() {
 		return data_nasc;
 	}
 
-	public void setData_nasc(String data_nasc) {
+	public void setData_nasc(LocalDate data_nasc) {
 		this.data_nasc = data_nasc;
+	}
+	/*
+	public void setData_nascimento_string(String data_nasc) {
+		this.data_nasc = Date.valueOf(data_nasc);
+	}
+	*/
+	public void setData_nascimento_string(String data_nasc)
+	{
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy"); 
+		LocalDate data = LocalDate.parse(data_nasc, formato);
+		this.data_nasc = data;
+	}
+	
+	public String getData_nascimento_string()
+	{
+		if (this.data_nasc == null)
+		{
+			return "";
+		}
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return formato.format(this.data_nasc);
+		//return this.data_nasc.toString();
 	}
 }
 

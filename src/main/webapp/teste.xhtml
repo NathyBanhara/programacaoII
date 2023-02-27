@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+    	<div class="card">
+    <h:form>
+        <p:megaMenu style="background-color: #4823ad;" orientation="horizontal" autoDisplay="false">
+            <p:submenu label="Videos" icon="pi pi-fw pi-video">
+                <p:column>
+                    <p:submenu label="Video 1">
+                        <p:menuitem value="Video 1.1"/>
+                        <p:menuitem value="Video 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="Video 2">
+                        <p:menuitem value="Video 2.1"/>
+                        <p:menuitem value="Video 2.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Video 3">
+                        <p:menuitem value="Video 3.1"/>
+                        <p:menuitem value="Video 3.2"/>
+                    </p:submenu>
+                    <p:submenu label="Video 4">
+                        <p:menuitem value="Video 4.1"/>
+                        <p:menuitem value="Video 4.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Users" icon="pi pi-fw pi-users">
+
+                <p:column>
+                    <p:submenu label="User 1">
+                        <p:menuitem value="User 1.1"/>
+                        <p:menuitem value="User 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="User 2">
+                        <p:menuitem value="User 2.1"/>
+                        <p:menuitem value="User 2.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="User 3">
+                        <p:menuitem value="User 3.1"/>
+                        <p:menuitem value="User 3.2"/>
+                    </p:submenu>
+                    <p:submenu label="User 4">
+                        <p:menuitem value="User 4.1"/>
+                        <p:menuitem value="User 4.2"/>
+                    </p:submenu>
+                </p:column>
+                <p:column>
+                    <p:submenu label="User 5">
+                        <p:menuitem value="User 5.1"/>
+                        <p:menuitem value="User 5.2"/>
+                    </p:submenu>
+                    <p:submenu label="User 6">
+                        <p:menuitem value="User 6.1"/>
+                        <p:menuitem value="User 6.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Events" icon="pi pi-fw pi-calendar">
+                <p:column>
+                    <p:submenu label="Event 1">
+                        <p:menuitem value="Event 1.1"/>
+                        <p:menuitem value="Event 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="Event 2">
+                        <p:menuitem value="Event 2.1"/>
+                        <p:menuitem value="Event 2.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Event 3">
+                        <p:menuitem value="Event 3.1"/>
+                        <p:menuitem value="Event 3.2"/>
+                    </p:submenu>
+                    <p:submenu label="Event 4">
+                        <p:menuitem value="Event 4.1"/>
+                        <p:menuitem value="Event 4.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+
+            <p:submenu label="Settings" icon="pi pi-fw pi-cog">
+                <p:column>
+                    <p:submenu label="Setting 1">
+                        <p:menuitem value="Setting 1.1"/>
+                        <p:menuitem value="Setting 1.2"/>
+                    </p:submenu>
+                    <p:submenu label="Setting 2">
+                        <p:menuitem value="Setting 2.1"/>
+                        <p:menuitem value="Setting 2.2"/>
+                    </p:submenu>
+                    <p:submenu label="Setting 3">
+                        <p:menuitem value="Setting 3.1"/>
+                        <p:menuitem value="Setting 3.2"/>
+                    </p:submenu>
+                </p:column>
+
+                <p:column>
+                    <p:submenu label="Setting 4">
+                        <p:menuitem value="Setting 4.1"/>
+                        <p:menuitem value="Setting 4.2"/>
+                    </p:submenu>
+                </p:column>
+            </p:submenu>
+        </p:megaMenu>
+    </h:form>
+</div>
+    	<div class="container">
+        	<h:form  class="login-form">
+        		<p:commandButton style="background-color: #4823ad;" value = "Safras" action = "cadastrar_safra?faces-redirect=true"></p:commandButton>
+        		<p:commandButton style="background-color: #4823ad;" value = "Áreas" action = "cadastrar_area?faces-redirect=true"></p:commandButton>
+        		<p:commandButton style="background-color: #4823ad;" value = "Finanças" action = "cadastrar_financas?faces-redirect=true"></p:commandButton>
+        	</h:form>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -41,7 +41,7 @@ public class CadastroAnotacaoController implements Serializable
 	  	{
 	  		try
 	  		{
-				this.facesContext.getExternalContext().redirect("login-error.xhtml");
+				this.facesContext.getExternalContext().redirect("error.xhtml");
 			} catch (IOException e) {e.printStackTrace();}
 	  	}
 	  	this.listaAnotacoes = anotacaoDAO.listarTodos();
@@ -58,23 +58,24 @@ public class CadastroAnotacaoController implements Serializable
 	//Chama método de verificação se usuário é válido (regras negociais)
 	//Limpa lista de permissões de usuário (é mais simples limpar e adicionar todas novamente depois)
 	  		//Adiciona todas as permissões selecionadas em tela
+		this.anotacao.setSafra(this.anotacaoDAO.acharSafra());
 		try
 		{
 			if (this.anotacao.getIdAnotacao() == null)
 			{
 				this.anotacaoDAO.salvar(this.anotacao);
-				this.facesContext.addMessage(null, new FacesMessage("Anotações Criada"));
+				this.facesContext.addMessage(null, new FacesMessage("Anotação Criada"));
 			}
 			else
 			{
 				this.anotacaoDAO.atualizar(this.anotacao);
-				this.facesContext.addMessage(null, new FacesMessage("Anotacao Atualizada"));
+				this.facesContext.addMessage(null, new FacesMessage("Anotação Atualizada"));
 			}
 			//Após salvar usuário é necessário recarregar lista que popula tabela com os novos dados
 			this.listaAnotacoes = anotacaoDAO.listarTodos();
 			//Atualiza e executa elementos Javascript na tela assincronamente
-			PrimeFaces.current().executeScript("PF('usuarioDialog').hide()");
-			PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+			PrimeFaces.current().executeScript("PF('anotacaoDialog').hide()");
+			PrimeFaces.current().ajax().update("form:messages", "form:dt-anotacoes");
 		}
 		catch (Exception e)
 		{
@@ -93,21 +94,19 @@ public class CadastroAnotacaoController implements Serializable
 		        //Limpa seleção de usuário
 				this.anotacao = null;
 		        this.facesContext.addMessage(null, new FacesMessage("Anotação Removida"));
-		        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+		        PrimeFaces.current().ajax().update("form:messages", "form:dt-anotacoes");
 	      } catch (Exception e) {
 	          String errorMessage = getMensagemErro(e);
 	          this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
 	      }
 		}
-/*
+
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.permissoesSelecionadas.clear();
-		for (TipoPermissao p: this.usuario.getPermissoes())
-			this.permissoesSelecionadas.add(p.getId());
-		this.usuario.setSenha("");
+		this.anotacao.setDescr("");
+		this.anotacao.setTexto("");
 	}
-*/
+
 		
 	//Captura mensagem de erro das validações do Hibernate
 	private String getMensagemErro(Exception e) {

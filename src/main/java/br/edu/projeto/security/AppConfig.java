@@ -18,7 +18,7 @@ import javax.security.enterprise.identitystore.DatabaseIdentityStoreDefinition;
         dataSourceLookup = "java:/PostgresDS100",
         callerQuery = "SELECT senha FROM produtor WHERE cpf = ?",
         //groupsQuery = "SELECT permissao FROM tipo_permissao JOIN permissao USING (id_tipo_permissao) JOIN usuario USING (id_usuario) WHERE usuario = ?"
-        groupsQuery = "SELECT CASE WHEN cpf = '11111111111' THEN 'admin' ELSE 'produtor' END permissao FROM produtor where cpf = ?"
+        groupsQuery = "SELECT CASE WHEN cpf = '86803717003' THEN 'admin' ELSE 'produtor' END permissao FROM produtor where cpf = ?"
 )
 
 @ApplicationScoped

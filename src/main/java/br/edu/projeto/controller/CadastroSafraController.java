@@ -2,19 +2,24 @@ package br.edu.projeto.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
 
+import br.edu.projeto.dao.AreaDAO;
 import br.edu.projeto.dao.SafraDAO;
+import br.edu.projeto.model.Area;
 import br.edu.projeto.model.Safra;
+import br.edu.projeto.util.SafraId;
 
 @ViewScoped
 @Named
@@ -32,6 +37,8 @@ public class CadastroSafraController implements Serializable
 	
 	private List<Safra> listaSafras;
 	
+	
+	
 	@PostConstruct
 	public void init() {
 	  	//Verifica se usuário está autenticado e possui a permissão adequada
@@ -41,11 +48,18 @@ public class CadastroSafraController implements Serializable
 	  	{
 	  		try
 	  		{
-				this.facesContext.getExternalContext().redirect("login-error.xhtml");
+				this.facesContext.getExternalContext().redirect("error.xhtml");
 			} catch (IOException e) {e.printStackTrace();}
 	  	}
-	  	this.listaSafras = safraDAO.listarTodos();
+    	this.listaSafras = safraDAO.listarTodos();
 	  }
+	
+	//Guardar id da Safra em SafraId
+	public void verAreas() throws IOException
+	{
+		SafraId.setSafra(this.safra.getIdSafra());
+		facesContext.getExternalContext().redirect("menu.xhtml");
+	}
 	
 	//Chamado pelo botão novo
 	public void novoCadastro()
@@ -60,6 +74,7 @@ public class CadastroSafraController implements Serializable
 	  		//Adiciona todas as permissões selecionadas em tela
 		try
 		{
+			this.safra.setProdutor(this.safraDAO.acharProdutor());
 			if (this.safra.getIdSafra() == null)
 			{
 				this.safraDAO.salvar(this.safra);
@@ -73,8 +88,8 @@ public class CadastroSafraController implements Serializable
 			//Após salvar usuário é necessário recarregar lista que popula tabela com os novos dados
 			this.listaSafras = safraDAO.listarTodos();
 			//Atualiza e executa elementos Javascript na tela assincronamente
-			PrimeFaces.current().executeScript("PF('usuarioDialog').hide()");
-			PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+			PrimeFaces.current().executeScript("PF('safraDialog').hide()");
+			PrimeFaces.current().ajax().update("form:messages", "form:dt-safras");
 		}
 		catch (Exception e)
 		{
@@ -92,22 +107,22 @@ public class CadastroSafraController implements Serializable
 				this.listaSafras = safraDAO.listarTodos();
 		        //Limpa seleção de usuário
 				this.safra = null;
-		        this.facesContext.addMessage(null, new FacesMessage("Produtor Removido"));
-		        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+		        this.facesContext.addMessage(null, new FacesMessage("Safra Removida"));
+		        PrimeFaces.current().ajax().update("form:messages", "form:dt-safras");
 	      } catch (Exception e) {
 	          String errorMessage = getMensagemErro(e);
 	          this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
 	      }
 		}
-/*
+
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.permissoesSelecionadas.clear();
-		for (TipoPermissao p: this.usuario.getPermissoes())
-			this.permissoesSelecionadas.add(p.getId());
-		this.usuario.setSenha("");
+		this.safra.setAno(null);
+		this.safra.setMesInicio(null);
+		this.safra.setMes_termino(null);
+		this.safra.setTipoCul("");
 	}
-*/
+
 		
 	//Captura mensagem de erro das validações do Hibernate
 	private String getMensagemErro(Exception e) {

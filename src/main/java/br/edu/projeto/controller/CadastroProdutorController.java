@@ -64,19 +64,17 @@ public class CadastroProdutorController implements Serializable
 	//Chamado ao salvar cadastro de usuário (novo ou edição)
 	public void salvar() {
 	//Chama método de verificação se usuário é válido (regras negociais)
-	if (produtorValido()) {
-	//Limpa lista de permissões de usuário (é mais simples limpar e adicionar todas novamente depois)
-	  		//Adiciona todas as permissões selecionadas em tela
+		if (produtorValido()) {
 
-	try {
-		//Aplica Hash na senha
-		this.usuario.setSenha(this.passwordHash.generate(this.usuario.getSenha().toCharArray()));
-	    if (this.usuario.getCpf() == null)
-	    {
-	    	this.produtorDAO.salvar(this.usuario);
-			this.facesContext.addMessage(null, new FacesMessage("Produtor Criado"));
+		try {
+			//Aplica Hash na senha
+			this.usuario.setSenha(this.passwordHash.generate(this.usuario.getSenha().toCharArray()));
+			if (this.usuario.getCpf() == null)
+			{
+				this.produtorDAO.salvar(this.usuario);
+				this.facesContext.addMessage(null, new FacesMessage("Produtor Criado"));
 			}
-	    else
+			else
 			{
 				this.produtorDAO.atualizar(this.usuario);
 			    this.facesContext.addMessage(null, new FacesMessage("Produtor Atualizado"));
@@ -84,7 +82,7 @@ public class CadastroProdutorController implements Serializable
 	    //Após salvar usuário é necessário recarregar lista que popula tabela com os novos dados
 		this.listaProdutores = produtorDAO.listarTodos();
 		//Atualiza e executa elementos Javascript na tela assincronamente
-		PrimeFaces.current().executeScript("PF('usuarioDialog').hide()");
+		PrimeFaces.current().executeScript("PF('produtorDialog').hide()");
 		PrimeFaces.current().ajax().update("form:messages", "form:dt-produtores");
 		}
 		catch (Exception e)
@@ -95,6 +93,7 @@ public class CadastroProdutorController implements Serializable
 	 }
 		}	
 		
+	
 	//Realiza validações adicionais (não relizadas no modelo) e/ou complexas/interdependentes
 	private boolean produtorValido()
 	{
@@ -104,7 +103,7 @@ public class CadastroProdutorController implements Serializable
 			}
 			return true;
 	}
-		
+	
 	//Chamado pelo botão remover da tabela
 	public void remover() {
 		try {
@@ -120,15 +119,13 @@ public class CadastroProdutorController implements Serializable
 	          this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
 	      }
 		}
-/*
+
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.permissoesSelecionadas.clear();
-		for (TipoPermissao p: this.usuario.getPermissoes())
-			this.permissoesSelecionadas.add(p.getId());
+		this.usuario.setEmail("");
 		this.usuario.setSenha("");
 	}
-*/
+
 		
 	//Captura mensagem de erro das validações do Hibernate
 	private String getMensagemErro(Exception e) {
