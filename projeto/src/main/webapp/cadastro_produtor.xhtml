@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Define bibliotecas(tags) usadas na página -->
+<!-- Pode se usar elementos HTML padrão misturados com os JSF e Primefaces sem problemas -->
+<!-- As tags ui, h e f são do JSF -->
+<!-- ui são para elementos de organização (templates) e automatização (laços e condicionais) -->
+<!-- h são reimplementações de elementos HTML padrão que fornecem algumas funções/facilidades adicionais -->
+<!-- f são para comunicação/transmição de parâmetros entre páginas e para controle de requisições AJAX -->
+<!-- A tag p são do Primefaces, ela reimplementa as tags h com ainda mais funcionalidades e fornece tags adicionais com recursos avançados de Javascript e CSS embutidos -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    
+    <!-- Usado para definir uso do Template -->
+    <!-- O template só serve para uma melhor organização do código e para evitar a repetição de código -->
+    <ui:define name="content">
+    	
+    	    	<div class="card">
+    		<h:form>
+    
+    			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+        		<p:fieldset style="background-color: #4823ad; ">
+            	    <nav>
+      					<ul style="list-style: none; margin: 0; padding: 0; display: flex;">
+        					<li style="margin: 0 10px;"><a style="color: #fff; text-decoration: none;" href="#">Sair</a></li>
+      					</ul>
+    				</nav>
+        		</p:fieldset>
+   			</h:form>
+		</div>
+    
+    	<!-- Define formulário para Dialogs (elementos estilo Pop-up) -->
+    	<!-- Lembre-se que o uso de formulários só não é necessário para elementos que são estáticos (sem ação, animação, conteúdo dinâmico) -->     
+        <h:form id="dialogs">
+        	<p:growl id="messages"/>
+	        <p:dialog header="Produtor" showEffect="fade" modal="true" widgetVar="produtorDialog" responsive="true">   
+	            <p:outputPanel id="produtor-conteudo-dialog" class="ui-fluid">
+	                <p:outputPanel rendered="#{not empty cadastroProdutorController.usuario}">
+	                	<div class="field">
+	                        <p:outputLabel for="cpf">CPF</p:outputLabel>
+	                        <p:inputText id="cpf" value="#{cadastroProdutorController.usuario.cpf}" required="true" />
+	                    </div>
+	                    <div class="field">
+	                        <p:outputLabel for="nome">Nome</p:outputLabel>
+	                        <p:inputText id="nome" value="#{cadastroProdutorController.usuario.nome}" required="true" />
+	                    </div>
+	                    <div class="field">
+	                        <p:outputLabel for="email">E-mail</p:outputLabel>
+	                        <p:inputText id="email" value="#{cadastroProdutorController.usuario.email}" required="true"/>
+	                    </div>
+	                    <div class="field">
+	                        <p:outputLabel for="data_nasc">Data de Nascimento</p:outputLabel>
+	                        <p:inputText id="data_nasc" value="#{cadastroProdutorController.usuario.data_nascimento_string}" required="true"/>
+	                    </div>
+	                    <div class="field">
+	                        <p:outputLabel for="senha">Senha</p:outputLabel>
+	                        <p:password id="senha" value="#{cadastroProdutorController.usuario.senha}" toggleMask="true" redisplay="true"
+	                        feedback="true" weakLabel="Fraca" goodLabel="Boa" strongLabel="Forte" validatorMessage="Informe a senha"/>
+	                    </div>
+	                </p:outputPanel>
+	            </p:outputPanel>
+            
+            <f:facet name="footer">
+	                <p:commandButton value="Salvar" icon="pi pi-check" actionListener="#{cadastroProdutorController.salvar}"
+	                    update="produtor-conteudo-dialog dialogs:messages" process="produtor-conteudo-dialog @this" />
+	                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('produtorDialog').hide()" class="ui-button-secondary" type="button" />
+	            </f:facet>
+	        </p:dialog>  
+
+	        <p:confirmDialog widgetVar="removerProdutorDialog" showEffect="fade" width="300"
+	            message="Desejar remover este usuário?" header="Confirm" severity="warn">
+	            <p:commandButton value="Sim" icon="pi pi-check" actionListener="#{cadastroProdutorController.remover}"
+	                process="@this" oncomplete="PF('removerProdutorDialog').hide()" />
+	            <p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times" onclick="PF('removerProdutorDialog').hide()" />
+	        </p:confirmDialog>
+		
+        </h:form> 
+	
+	              
+        
+        <!-- Define formulário principal -->  
+        <h:form id="form">
+            <p:growl id="messages" showDetail="true" />
+            
+            <p:toolbar>
+            	
+	            <p:toolbarGroup>
+	                <p:commandButton value="Novo" icon="pi pi-plus" actionListener="#{cadastroProdutorController.novoCadastro}"
+	                    update=":dialogs:produtor-conteudo-dialog" oncomplete="PF('produtorDialog').show()"
+	                    styleClass="ui-button-none" style="margin-right: .5rem; border: none; background-color: #1AAD7A; ">
+	                    <p:resetInput target=":dialogs:produtor-conteudo-dialog" />
+	                </p:commandButton>
+	            </p:toolbarGroup>
+	        </p:toolbar>
+	
+	        <p:dataTable id="dt-produtores" widgetVar="dtProdutores" var="us" value="#{cadastroProdutorController.listaProdutores}">
+	            <f:facet name="header">
+	                <div>
+	                    <span style="font-weight: bold">USUÁRIOS</span>
+	                    <span class="filter-container ui-input-icon-left"> <i class="pi pi-search"></i>
+                        <p:inputText id="globalFilter" onkeyup="PF('dtProdutores').filter()" placeholder="Procurar" />
+                    	</span>
+	                </div>
+	            </f:facet>
+	
+	            <p:column headerText="Usuário" sortBy="#{us.nome}" filterBy="#{us.nome}">
+	                <h:outputText value="#{us.nome}" />
+	            </p:column>
+	            <p:column headerText="E-mail" sortBy="#{us.email}" filterBy="#{us.email}">
+	                <h:outputText value="#{us.email}" />
+	            </p:column>
+	
+			            <p:column>
+	            	<!-- Cuidado com botões que usam AJAX -->
+	            	<!-- process indica qual elemento do formulário será processado (padrão é todo o formulário), @this é só o próprio elemento -->
+	            	<!-- update informa qual elemento será atualizado (renderizado novamente) ao finalizar ação -->
+	            	<!-- é possível disparar ações para diversos eventos Javascript, deve-se cuidar a ordem da resolução dos mesmos -->
+	            	<!-- como regra geral a prioridade de processamento é a seguinte (eventos on... - oncomplete, onclick, onblur, actionListener, action, oncomplete no final) -->
+	            	<!-- PF é usado para chamada de função Javascript de algum elemento do Primefaces -->
+	            	<p:commandButton icon="pi pi-pencil" update=":dialogs:produtor-conteudo-dialog" 
+	                    oncomplete="PF('produtorDialog').show()" action="#{cadastroProdutorController.alterar}"
+	                    styleClass="edit-button rounded-button ui-button-none" style="background-color: #3B11AD; border: none; " process="@this">
+	                    <f:setPropertyActionListener value="#{us}" target="#{cadastroProdutorController.usuario}" />
+	                    <p:resetInput target=":dialogs:produtor-conteudo-dialog" />
+	                </p:commandButton>
+	    
+	                <p:commandButton class="ui-button-none rounded-button" style="background-color: #AD4B34; border: none; " icon="pi pi-trash"
+	                                 process="@this" oncomplete="PF('removerProdutorDialog').show()">
+	                    <f:setPropertyActionListener value="#{us}" target="#{cadastroProdutorController.usuario}" />
+	                </p:commandButton>
+	            </p:column>
+	        </p:dataTable>
+	    </h:form>
+    
+    </ui:define>
+</ui:composition>

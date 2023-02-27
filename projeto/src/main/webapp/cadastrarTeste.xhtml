@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+
+    	<div class="card">
+    		<h:form>
+    			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+        		<p:fieldset style="background-color: #4823ad; ">
+            	    <nav>
+      					<ul style="list-style: none; margin: 0; padding: 0; display: flex;">
+        					<li style="margin: 0 10px;"><a style="color: #fff; text-decoration: none;" href="#">Contato</a></li>
+        					<li style="margin: 0 10px;"><a style="color: #fff; text-decoration: none;" href="#">Sair</a></li>
+      					</ul>
+    				</nav>
+        		</p:fieldset>
+   			</h:form>
+		</div>
+		
+		    	<div class="container">
+        	<h:form  class="login-form">
+        	
+        		<h1>Nova Safra</h1>
+        		<h:panelGrid columns="2">
+        			<h5>CPF:</h5>
+    				<p:inputText value="#{loginController.produtor.cpf}"/>
+    			
+    				<h5>Senha:</h5>
+        			<p:password id="toggle" value="#{loginController.produtor.senha}" toggleMask="true" redisplay="true"/>
+        	    <!-- <h5>Senha:</h5>
+        	    <p:password value="#{loginController.produtor.senha}"/> -->
+        	    
+        		</h:panelGrid>
+        		
+        		<p>
+        		<h:panelGrid columns="2">
+        			<p:commandButton value="Login" action="#{loginController.login}"/>
+        			<p:messages styleClass="messages" errorClass="invalid" infoClass="valid" warnClass="warning" globalOnly="true" />
+            	</h:panelGrid>
+            </p>
+			  
+            <p>
+                <h:panelGrid columns="2">
+                    <h:commandButton class="login2" value="Login" action="#{loginController.login}"/>
+                    <h:messages styleClass="messages" errorClass="invalid" infoClass="valid" warnClass="warning" globalOnly="true" />
+                </h:panelGrid>
+            </p>
+
+        </h:form>
+        	</div>
+    
+    </ui:define>
+</ui:composition>
