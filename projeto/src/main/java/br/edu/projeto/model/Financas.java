@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -63,6 +64,17 @@ public class Financas
     @Column(name = "data_rec")
     private LocalDate dataRec;
     
+    @Transient
+    private String opcao;
+    
+	public String getOpcao() {
+		return opcao;
+	}
+
+	public void setOpcao(String opcao) {
+		this.opcao = opcao;
+	}
+
 	@ManyToOne(cascade  = CascadeType.MERGE)
 	@JoinColumn(name = "safra",
 	foreignKey = @ForeignKey(name = "fk_financas_safra")
@@ -150,7 +162,7 @@ public class Financas
 	}
 	
 	public void setData_pag_string(String dataPag) {
-		if (dataPag.equals(""))
+		if (dataPag == null)
 		{
 			this.dataPag = null;
 		}
@@ -181,7 +193,7 @@ public class Financas
 	}
 	
 	public void setData_rec_string(String dataRec) {
-		if (dataRec.equals(""))
+		if (dataRec == null)
 		{
 			this.dataRec = null;
 		}

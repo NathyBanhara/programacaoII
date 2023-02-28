@@ -50,6 +50,12 @@ public class FinancasDAO implements Serializable
 		TypedQuery<Financas> q = em.createQuery("SELECT f FROM Financas f WHERE f.safra = ?1", Financas.class);
 		q.setParameter(1, s);
 		financas.addAll(q.getResultList());
+		for (int i = 0; i < financas.size(); i++)
+		{
+			if (financas.get(i).getDataPag() == null)
+				financas.get(i).setOpcao("Receita");
+			else financas.get(i).setOpcao("Despesa");
+		}
 	    return financas;       
 	}
 	

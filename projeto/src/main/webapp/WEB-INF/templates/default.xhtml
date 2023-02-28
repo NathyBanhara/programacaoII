@@ -10,7 +10,8 @@
 	<!-- Nome que aparecerá na aba do navegador para o usuário -->
     <title>Ivam Banhara</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <h:outputStylesheet name="css/screen2.css" /> 
+    <h:outputStylesheet name="css/screen2.css" />
+    <h:outputScript name="js/date.js" /> 
 </h:head>
 <h:body>
     <div id="container">
@@ -18,15 +19,6 @@
             <ui:insert name="content">
                     <!-- Conteúdo das páginas que usarão o template será inserido aqui -->
          </ui:insert>
-        </div>
-        <div id="footer">
-            <p>
-            	<h:form>
-	                <h:panelGrid columns="2">
-	                    <h:commandButton value="Logout" action="#{loginController.logout}"/>
-	                </h:panelGrid>
-                </h:form>
-            </p>
         </div>
     </div>
 </h:body>

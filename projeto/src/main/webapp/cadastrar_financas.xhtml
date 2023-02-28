@@ -24,8 +24,9 @@
         		<p:fieldset style="background-color: #4823ad; ">
             	    <nav>
       					<ul style="list-style: none; margin: 0; padding: 0; display: flex;">
-        					<li style="margin: 0 10px;"><a style="color: #fff; text-decoration: none;" href="#">Voltar</a></li>
-        					<li style="margin: 0 10px;"><a style="color: #fff; text-decoration: none;" href="#">Sair</a></li>
+	                		<h:panelGrid columns="2">
+	                    		<h:commandButton value="Sair" action="#{loginController.logout}" style="margin: 0 10px; padding:2px; background-color: #4823ad; border:none; font-size: 1em; color: #fff; text-decoration: none;"/>
+	                		</h:panelGrid>
       					</ul>
     				</nav>
         		</p:fieldset>
@@ -36,17 +37,17 @@
     	<!-- Lembre-se que o uso de formulários só não é necessário para elementos que são estáticos (sem ação, animação, conteúdo dinâmico) -->     
         <h:form id="dialogs">
         	<p:growl id="messages"/>
-	        <p:dialog header="Nova Finanças" showEffect="fade" modal="true" widgetVar="financasDialog" responsive="true">   
+	        <p:dialog header="FINANÇAS" showEffect="fade" modal="true" widgetVar="financasDialog" responsive="true">   
 	            <p:outputPanel id="financas-conteudo-dialog" class="ui-fluid">
 	                <p:outputPanel rendered="#{not empty cadastroFinancasController.financas}">
 	                    <div class="field">
 	                        <p:outputLabel for="nomeFor">Nome do Fornecedor</p:outputLabel>
 	                        <p:inputText id="nomeFor" value="#{cadastroFinancasController.financas.nomeFor}" required="true" />
 	                    </div>
-	                    <div class="field">
-	                        <p:outputLabel for="dataReal">Data de Realização</p:outputLabel>
-	                        <p:inputText id="dataReal" value="#{cadastroFinancasController.financas.data_real_string}" required="true"/>
-	                    </div>
+	                    <div class="field col-12 md:col-4">
+                			<p:outputLabel for="dataReal" value="Data de Realização"/>
+                			<p:datePicker id="dataReal" value="#{cadastroFinancasController.financas.dataReal}" monthNavigator="true" yearNavigator="true" locale="pt" required="true" />
+            			</div>
 	                    <div class="field">
 	                        <p:outputLabel for="obs">Observação</p:outputLabel>
 	                        <p:inputText id="obs" value="#{cadastroFinancasController.financas.obs}" />
@@ -59,14 +60,18 @@
 	                        <p:outputLabel for="valor">Valor</p:outputLabel>
 	                        <p:inputText id="valor" value="#{cadastroFinancasController.financas.valor}" required="true" />
 	                    </div>
-	                    <div class="field">
-	                        <p:outputLabel for="dataPag">Data de Pagamento</p:outputLabel>
-	                        <p:inputText id="dataPag" value="#{cadastroFinancasController.financas.data_pag_string}" required="false"/>
-	                    </div>
-	                    <div class="field">
-	                        <p:outputLabel for="dataRec">Data de Recebimento</p:outputLabel>
-	                        <p:inputText id="dataRec" value="#{cadastroFinancasController.financas.data_rec_string}" required="false"/>
-	                    </div>
+	                    <div class="field col-12 md:col-4">
+                			<p:outputLabel for="@next" value="Tipo"/>
+                			<p:selectOneMenu id="option" value="#{cadastroFinancasController.financas.opcao}" required="true">
+                    			<f:selectItem itemLabel="Selecione Um" itemValue=""/>
+                    			<f:selectItem itemLabel="Despesa" itemValue="Despesa"/>
+                    			<f:selectItem itemLabel="Receita" itemValue="Receita"/>
+                			</p:selectOneMenu>
+            			</div>
+            			<div class="field col-12 md:col-4">
+                			<p:outputLabel for="data" value="Data de Pagamento/Recebimento"/>
+                			<p:datePicker id="data" value="#{cadastroFinancasController.data}" monthNavigator="true" yearNavigator="true" locale="pt" required="true" />
+            			</div>
 	                </p:outputPanel>
 	                
 	            </p:outputPanel>
@@ -118,6 +123,9 @@
 	            </p:column>
 	            <p:column headerText="Valor" sortBy="#{us.valor}" filterBy="#{us.valor}">
 	                <h:outputText value="#{us.valor}" />
+	            </p:column>
+	            <p:column headerText="Tipo" sortBy="#{us.opcao}" filterBy="#{us.opcao}">
+	                <h:outputText value="#{us.opcao}" />
 	            </p:column>
 	
 			            <p:column>

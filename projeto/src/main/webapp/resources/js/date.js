@@ -1,0 +1,23 @@
+PrimeFaces.locales['pt'] = {
+        closeText: 'Fechar',
+        prevText: 'Anterior',
+        nextText: 'Seguinte',
+        monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Maio', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dec'],
+        dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+        dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sexta', 'Sab'],
+        dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+        weekHeader: 'Semana',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: '',
+        currentText: 'Data atual',
+        ampm: false,
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+        allDayText: 'Todo os dias',
+                today: 'Hoje',
+        clear: 'Claro'
+    };

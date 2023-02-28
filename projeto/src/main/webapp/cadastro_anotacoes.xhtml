@@ -24,8 +24,9 @@
         		<p:fieldset style="background-color: #4823ad; ">
             	    <nav>
       					<ul style="list-style: none; margin: 0; padding: 0; display: flex;">
-        					<li style="margin: 0 10px;"><a style="color: #fff; text-decoration: none;" href="#">Voltar</a></li>
-        					<li style="margin: 0 10px;"><a style="color: #fff; text-decoration: none;" href="#">Sair</a></li>
+	                		<h:panelGrid columns="2">
+	                    		<h:commandButton value="Sair" action="#{loginController.logout}" style="margin: 0 10px; padding:2px; background-color: #4823ad; border:none; font-size: 1em; color: #fff; text-decoration: none;"/>
+	                		</h:panelGrid>
       					</ul>
     				</nav>
         		</p:fieldset>
@@ -36,17 +37,17 @@
     	<!-- Lembre-se que o uso de formulários só não é necessário para elementos que são estáticos (sem ação, animação, conteúdo dinâmico) -->     
         <h:form id="dialogs">
         	<p:growl id="messages"/>
-	        <p:dialog header="Nova Anotação" showEffect="fade" modal="true" widgetVar="anotacaoDialog" responsive="true">   
+	        <p:dialog header="ANOTAÇÃO" showEffect="fade" modal="true" widgetVar="anotacaoDialog" responsive="true">   
 	            <p:outputPanel id="anotacao-conteudo-dialog" class="ui-fluid">
 	                <p:outputPanel rendered="#{not empty cadastroAnotacaoController.anotacao}">
-	                    <div class="field">
-	                        <p:outputLabel for="dataInicio">Data de Início</p:outputLabel>
-	                        <p:inputText id="dataInicio" value="#{cadastroAnotacaoController.anotacao.data_inicio_string}" required="true" />
-	                    </div>
-	                    <div class="field">
-	                        <p:outputLabel for="dataTerm">Data de Término</p:outputLabel>
-	                        <p:inputText id="dataTerm" value="#{cadastroAnotacaoController.anotacao.data_term_string}" required="false"/>
-	                    </div>
+	                    <div class="field col-12 md:col-4">
+                			<p:outputLabel for="dataInicio" value="Data de Início"/>
+                			<p:datePicker id="dataInicio" value="#{cadastroAnotacaoController.anotacao.dataInicio}" monthNavigator="true" yearNavigator="true" locale="pt" required="true" />
+            			</div>
+            			<div class="field col-12 md:col-4">
+                			<p:outputLabel for="dataTerm" value="Data de Término"/>
+                			<p:datePicker id="dataTerm" value="#{cadastroAnotacaoController.anotacao.dataTerm}" monthNavigator="true" yearNavigator="true" locale="pt" required="false" />
+            			</div>
 	                    <div class="field">
 	                        <p:outputLabel for="descr">Descrição</p:outputLabel>
 	                        <p:inputText id="descr" value="#{cadastroAnotacaoController.anotacao.descr}" required="true"/>

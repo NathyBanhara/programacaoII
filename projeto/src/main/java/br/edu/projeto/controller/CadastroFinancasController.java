@@ -2,6 +2,7 @@ package br.edu.projeto.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +33,8 @@ public class CadastroFinancasController implements Serializable
 	
 	private List<Financas> listaFinancas;
 	
+	private LocalDate data;
+
 	@PostConstruct
 	public void init() {
 	  	//Verifica se usuário está autenticado e possui a permissão adequada
@@ -58,6 +61,16 @@ public class CadastroFinancasController implements Serializable
 	//Chama método de verificação se usuário é válido (regras negociais)
 	//Limpa lista de permissões de usuário (é mais simples limpar e adicionar todas novamente depois)
 	  		//Adiciona todas as permissões selecionadas em tela
+		if (this.financas.getOpcao().equals("Despesa"))
+		{
+			this.financas.setDataPag(this.data);
+			this.financas.setDataRec(null);
+		}
+		else
+		{
+			this.financas.setDataRec(this.data);
+			this.financas.setDataPag(null);
+		}
 		this.financas.setSafra(this.financasDAO.acharSafra());
 		try
 		{
@@ -156,5 +169,13 @@ public class CadastroFinancasController implements Serializable
 
 	public void setListaFinancas(List<Financas> listaFinancas) {
 		this.listaFinancas = listaFinancas;
+	}
+
+	public LocalDate getData() {
+		return data;
+	}
+
+	public void setData(LocalDate data) {
+		this.data = data;
 	}
 }

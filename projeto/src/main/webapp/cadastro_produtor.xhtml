@@ -25,7 +25,9 @@
         		<p:fieldset style="background-color: #4823ad; ">
             	    <nav>
       					<ul style="list-style: none; margin: 0; padding: 0; display: flex;">
-        					<li style="margin: 0 10px;"><a style="color: #fff; text-decoration: none;" href="#">Sair</a></li>
+      						<h:panelGrid columns="2">
+	                    		<h:commandButton value="Sair" action="#{loginController.logout}" style="margin: 0 10px; padding:2px; background-color: #4823ad; border:none; font-size: 1em; color: #fff; text-decoration: none;"/>
+	                		</h:panelGrid>
       					</ul>
     				</nav>
         		</p:fieldset>
@@ -51,10 +53,10 @@
 	                        <p:outputLabel for="email">E-mail</p:outputLabel>
 	                        <p:inputText id="email" value="#{cadastroProdutorController.usuario.email}" required="true"/>
 	                    </div>
-	                    <div class="field">
-	                        <p:outputLabel for="data_nasc">Data de Nascimento</p:outputLabel>
-	                        <p:inputText id="data_nasc" value="#{cadastroProdutorController.usuario.data_nascimento_string}" required="true"/>
-	                    </div>
+	                    <div class="field col-12 md:col-4">
+                			<p:outputLabel for="data_nasc" value="Data de nascimento"/>
+                			<p:datePicker id="data_nasc" value="#{cadastroProdutorController.usuario.data_nasc}" monthNavigator="true" yearNavigator="true" locale="pt" required="true" />
+            			</div>
 	                    <div class="field">
 	                        <p:outputLabel for="senha">Senha</p:outputLabel>
 	                        <p:password id="senha" value="#{cadastroProdutorController.usuario.senha}" toggleMask="true" redisplay="true"

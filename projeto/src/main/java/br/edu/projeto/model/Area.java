@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -32,6 +33,17 @@ public class Area
 	
 	@NotNull
 	private float quant_hec;
+	
+	@Transient
+	private Integer novo;
+	
+	public Integer getNovo() {
+		return novo;
+	}
+
+	public void setNovo(Integer novo) {
+		this.novo = novo;
+	}
 	
 	@ManyToOne(cascade  = CascadeType.MERGE)
 	@JoinColumn(name = "safra",

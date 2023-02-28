@@ -18,6 +18,7 @@ import org.primefaces.PrimeFaces;
 import br.edu.projeto.dao.AreaDAO;
 import br.edu.projeto.dao.SafraDAO;
 import br.edu.projeto.model.Area;
+import br.edu.projeto.model.Produtor;
 import br.edu.projeto.model.Safra;
 
 
@@ -86,30 +87,39 @@ public class CadastroAreaController implements Serializable {
         this.setArea(new Area());
     }
 	
-	//Chamado ao salvar cadastro de usuário (novo ou edição)
 	public void salvar() {
 		//Chama método de verificação se usuário é válido (regras negociais)
-        if (areaValido()) {
-        	this.area.setSafra(this.areaDAO.acharSafra());
-        	try {
-        		if (this.area.getEnder() == null) {
-		        	this.areaDAO.salvar(this.area);
-		        	this.facesContext.addMessage(null, new FacesMessage("Área Criada"));
-		        } else {
-		        	this.areaDAO.atualizar(this.area);
-		        	this.facesContext.addMessage(null, new FacesMessage("Área Atualizada"));
-		        }
-        		//Após salvar usuário é necessário recarregar lista que popula tabela com os novos dados
-		        this.listaAreas = areaDAO.listarTodos();
-		        //Atualiza e executa elementos Javascript na tela assincronamente
-			    PrimeFaces.current().executeScript("PF('areaDialog').hide()");
-			    PrimeFaces.current().ajax().update("form:messages", "form:dt-areas");
-	        } catch (Exception e) {
-	            String errorMessage = getMensagemErro(e);
-	            this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
-	        }
-        }
-	}	
+			try
+			{
+				if (this.area.getNovo() == null) {
+					if (areaValido())
+					{
+						this.area.setSafra(this.areaDAO.acharSafra());
+						this.areaDAO.salvar(this.area);
+						this.facesContext.addMessage(null, new FacesMessage("Área Criada"));
+					}
+				}
+				else
+				{
+					if (areaValidoAlterar())
+					{
+						this.area.setSafra(this.areaDAO.acharSafra());
+						this.areaDAO.atualizar(this.area);
+					    this.facesContext.addMessage(null, new FacesMessage("Área Atualizada"));
+					}
+				}
+				//Após salvar usuário é necessário recarregar lista que popula tabela com os novos dados
+				this.listaAreas = areaDAO.listarTodos();
+				//Atualiza e executa elementos Javascript na tela assincronamente
+				PrimeFaces.current().executeScript("PF('areaDialog').hide()");
+				PrimeFaces.current().ajax().update("form:messages", "form:dt-areas");
+			}
+			catch (Exception e)
+			{
+				String errorMessage = getMensagemErro(e);
+				this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
+			}
+		 }	
 	
 	//Realiza validações adicionais (não relizadas no modelo) e/ou complexas/interdependentes
 	private boolean areaValido() {
@@ -117,6 +127,37 @@ public class CadastroAreaController implements Serializable {
 			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Este endereço já está em uso.", null));
 			return false;
 		}
+		return true;
+	}
+	
+	public boolean areaValidoAlterar()
+	{
+		Area altArea = this.area;
+		try {
+			this.areaDAO.excluir(this.area);
+				//Após excluir usuário é necessário recarregar lista que popula tabela com os novos dados
+				this.listaAreas = areaDAO.listarTodos();
+		        //Limpa seleção de usuário
+				this.area = null;
+		        PrimeFaces.current().ajax().update("form:messages", "form:dt-areas");
+	      } catch (Exception e) {
+	          String errorMessage = getMensagemErro(e);
+	          this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null));
+	      }
+		if (!this.areaDAO.ehAreaUnico(altArea.getEnder())) {
+			this.facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Este endereço já está em uso.", null));
+			this.area = altArea;
+			this.areaDAO.salvar(this.area);
+			this.listaAreas = areaDAO.listarTodos();
+			PrimeFaces.current().executeScript("PF('areaDialog').hide()");
+			PrimeFaces.current().ajax().update("form:messages", "form:dt-areas");
+			return false;
+		}
+		this.area = altArea;
+		this.areaDAO.salvar(this.area);
+		this.listaAreas = areaDAO.listarTodos();
+		PrimeFaces.current().executeScript("PF('areaDialog').hide()");
+		PrimeFaces.current().ajax().update("form:messages", "form:dt-areas");
 		return true;
 	}
 	
@@ -138,6 +179,7 @@ public class CadastroAreaController implements Serializable {
 	
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
+		this.area.setNovo(1);
 		this.area.setNome("");
 		this.area.setQuant_hec(0);
 	}
