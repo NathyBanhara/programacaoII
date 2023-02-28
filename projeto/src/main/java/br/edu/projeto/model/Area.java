@@ -1,16 +1,11 @@
 package br.edu.projeto.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -35,7 +30,7 @@ public class Area
 	private float quant_hec;
 	
 	@Transient
-	private Integer novo;
+	private Integer novo; //me ajuda a checar se a area é nova ou é uma alteração
 	
 	public Integer getNovo() {
 		return novo;

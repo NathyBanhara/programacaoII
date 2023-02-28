@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import br.edu.projeto.model.Area;
 import br.edu.projeto.model.Financas;
 import br.edu.projeto.model.Produtor;
 import br.edu.projeto.model.Safra;
@@ -32,6 +31,7 @@ public class FinancasDAO implements Serializable
 		return prod.get(0);
 	}
 	
+	//acha safra correspondente à finança
 	public Safra acharSafra()
 	{
 		Integer safraId = SafraId.getSafra();

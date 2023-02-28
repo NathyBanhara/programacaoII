@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import br.edu.projeto.model.Anotacao;
-import br.edu.projeto.model.Financas;
 import br.edu.projeto.model.Safra;
 import br.edu.projeto.util.SafraId;
 
@@ -21,6 +20,7 @@ public class AnotacaoDAO implements Serializable
 	//Cria a conexão e controla a transação com o SGBD (usado pelo Hibernate)
     private EntityManager em;
 	
+	//achar safra correspondente à anotação
 	public Safra acharSafra()
 	{
 		Integer safraId = SafraId.getSafra();

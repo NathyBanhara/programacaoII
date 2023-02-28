@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateful;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -14,7 +13,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import br.edu.projeto.model.Area;
-import br.edu.projeto.model.Produtor;
 import br.edu.projeto.model.Safra;
 import br.edu.projeto.util.SafraId;
 
@@ -47,6 +45,7 @@ public class AreaDAO implements Serializable
 		return area.get(0);
 	}
 	
+	//acha safra correspondente a área
 	public Safra acharSafra()
 	{
 		Integer safraId = SafraId.getSafra();
@@ -58,7 +57,7 @@ public class AreaDAO implements Serializable
 	}
 	
 	//Query usando a linguagem HQL do Hibernate
-	//Idnicada para consultas simples
+	//Indicada para consultas simples
 	public List<Area> listarTodos() {
 		Safra s = acharSafra();
 		List<Area> areas = new ArrayList<Area>();

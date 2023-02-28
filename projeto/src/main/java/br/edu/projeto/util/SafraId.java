@@ -1,5 +1,6 @@
 package br.edu.projeto.util;
 
+//esta classe serve para saber de qual safra está sendo cadastradum área, finança ou anotação
 public class SafraId
 {
 	static Integer safra;

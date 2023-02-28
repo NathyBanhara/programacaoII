@@ -33,6 +33,7 @@ public class CadastroFinancasController implements Serializable
 	
 	private List<Financas> listaFinancas;
 	
+	//data de receita ou pagamento segundo a opção marcada
 	private LocalDate data;
 
 	@PostConstruct
@@ -56,11 +57,9 @@ public class CadastroFinancasController implements Serializable
 		this.setFinancas(new Financas());
 	}
 		
-	//Chamado ao salvar cadastro de usuário (novo ou edição)
+	//Chamado ao salvar cadastro de finança (novo ou edição)
 	public void salvar() {
-	//Chama método de verificação se usuário é válido (regras negociais)
-	//Limpa lista de permissões de usuário (é mais simples limpar e adicionar todas novamente depois)
-	  		//Adiciona todas as permissões selecionadas em tela
+		//coloca a data em despesa ou receita conforme opção selecionada
 		if (this.financas.getOpcao().equals("Despesa"))
 		{
 			this.financas.setDataPag(this.data);

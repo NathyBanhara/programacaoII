@@ -18,7 +18,6 @@ import org.primefaces.PrimeFaces;
 import br.edu.projeto.dao.AreaDAO;
 import br.edu.projeto.dao.SafraDAO;
 import br.edu.projeto.model.Area;
-import br.edu.projeto.model.Produtor;
 import br.edu.projeto.model.Safra;
 
 
@@ -88,7 +87,6 @@ public class CadastroAreaController implements Serializable {
     }
 	
 	public void salvar() {
-		//Chama método de verificação se usuário é válido (regras negociais)
 			try
 			{
 				if (this.area.getNovo() == null) {
@@ -130,6 +128,7 @@ public class CadastroAreaController implements Serializable {
 		return true;
 	}
 	
+	//testa se area a alterar está inserindo um endereço já usado
 	public boolean areaValidoAlterar()
 	{
 		Area altArea = this.area;
