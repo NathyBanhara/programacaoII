@@ -18,9 +18,8 @@
     <!-- O template só serve para uma melhor organização do código e para evitar a repetição de código -->
     <ui:define name="content">
     	
-    	    	<div class="card">
+    	<div class="card">
     		<h:form>
-    
     			<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
         		<p:fieldset style="background-color: #4823ad; ">
             	    <nav>
@@ -108,11 +107,17 @@
 	                </div>
 	            </f:facet>
 	
-	            <p:column headerText="Usuário" sortBy="#{us.nome}" filterBy="#{us.nome}">
+				<p:column headerText="CPF" sortBy="#{us.cpf}" filterBy="#{us.cpf}">
+	                <h:outputText value="#{us.cpf}" />
+	            </p:column>
+	            <p:column headerText="Nome" sortBy="#{us.nome}" filterBy="#{us.nome}">
 	                <h:outputText value="#{us.nome}" />
 	            </p:column>
 	            <p:column headerText="E-mail" sortBy="#{us.email}" filterBy="#{us.email}">
 	                <h:outputText value="#{us.email}" />
+	            </p:column>
+	            <p:column headerText="Data de Nascimento" sortBy="#{us.data_nascimento_string}" filterBy="#{us.data_nascimento_string}">
+	                <h:outputText value="#{us.data_nascimento_string}" />
 	            </p:column>
 	
 			            <p:column>

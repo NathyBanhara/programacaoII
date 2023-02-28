@@ -103,8 +103,6 @@ public class CadastroAnotacaoController implements Serializable
 
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.anotacao.setDescr("");
-		this.anotacao.setTexto("");
 	}
 
 		

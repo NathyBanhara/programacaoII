@@ -69,7 +69,7 @@
                 			</p:selectOneMenu>
             			</div>
             			<div class="field col-12 md:col-4">
-                			<p:outputLabel for="data" value="Data de Pagamento/Recebimento"/>
+                			<p:outputLabel for="data" value="Data de Transação"/>
                 			<p:datePicker id="data" value="#{cadastroFinancasController.data}" monthNavigator="true" yearNavigator="true" locale="pt" required="true" />
             			</div>
 	                </p:outputPanel>
@@ -120,6 +120,12 @@
 	
 	            <p:column headerText="Nome do Fornecedor" sortBy="#{us.nomeFor}" filterBy="#{us.nomeFor}">
 	                <h:outputText value="#{us.nomeFor}" />
+	            </p:column>
+	            <p:column headerText="Descrição" sortBy="#{us.descr}" filterBy="#{us.descr}">
+	                <h:outputText value="#{us.descr}" />
+	            </p:column>
+	            <p:column headerText="Data de Realização" sortBy="#{us.data_real_string}" filterBy="#{us.data_real_string}">
+	                <h:outputText value="#{us.data_real_string}" />
 	            </p:column>
 	            <p:column headerText="Valor" sortBy="#{us.valor}" filterBy="#{us.valor}">
 	                <h:outputText value="#{us.valor}" />

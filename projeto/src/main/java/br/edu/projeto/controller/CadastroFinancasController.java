@@ -116,13 +116,6 @@ public class CadastroFinancasController implements Serializable
 
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.financas.setData_pag_string(null);
-		this.financas.setData_rec_string(null);
-		this.financas.setData_real_string(null);
-		this.financas.setDescr("");
-		this.financas.setNomeFor("");
-		this.financas.setObs("");
-		this.financas.setValor(0);
 	}
 
 		

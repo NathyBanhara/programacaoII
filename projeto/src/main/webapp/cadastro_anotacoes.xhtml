@@ -104,6 +104,9 @@
 				<p:column headerText="Data de Início" sortBy="#{us.data_inicio_string}" filterBy="#{us.data_inicio_string}">
 	                <h:outputText value="#{us.data_inicio_string}" />
 	            </p:column>
+	            <p:column headerText="Data de Término" sortBy="#{us.data_term_string}" filterBy="#{us.data_term_string}">
+	                <h:outputText value="#{us.data_term_string}" />
+	            </p:column>
 	            <p:column headerText="Descrição" sortBy="#{us.descr}" filterBy="#{us.descr}">
 	                <h:outputText value="#{us.descr}" />
 	            </p:column>
@@ -122,7 +125,7 @@
 	                    oncomplete="PF('anotacaoDialog').show()" action="#{cadastroAnotacaoController.alterar}"
 	                    styleClass="edit-button rounded-button ui-button-none" style="background-color: #3B11AD; border: none; " process="@this">
 	                    <f:setPropertyActionListener value="#{us}" target="#{cadastroAnotacaoController.anotacao}" />
-	                    <p:resetInput target=":dialogs:produtor-conteudo-dialog" />
+	                    <p:resetInput target=":dialogs:anotacao-conteudo-dialog" />
 	                </p:commandButton>
 	    
 	                <p:commandButton class="ui-button-none rounded-button" style="background-color: #AD4B34; border: none; " icon="pi pi-trash"

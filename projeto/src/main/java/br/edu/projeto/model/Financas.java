@@ -158,6 +158,11 @@ public class Financas
 	}
 
 	public void setDataPag(LocalDate dataPag) {
+		if (dataPag != null && dataPag.compareTo(dataReal) < 0)
+		{
+			System.out.printf("\n\n\nA data de transação precisa ser maior ou igual a data de realização\n\n\n");
+			return;
+		}
 		this.dataPag = dataPag;
 	}
 	
@@ -189,6 +194,11 @@ public class Financas
 	}
 
 	public void setDataRec(LocalDate dataRec) {
+		if (dataRec != null && dataRec.compareTo(dataReal) < 0)
+		{
+			System.out.printf("\n\n\nA data de transação precisa ser maior ou igual a data de realização\n\n\n");
+			return;
+		}
 		this.dataRec = dataRec;
 	}
 	

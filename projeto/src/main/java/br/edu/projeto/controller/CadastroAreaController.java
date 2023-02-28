@@ -179,9 +179,6 @@ public class CadastroAreaController implements Serializable {
 	
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.area.setNovo(1);
-		this.area.setNome("");
-		this.area.setQuant_hec(0);
 	}
 	
 	//Captura mensagem de erro das validações do Hibernate

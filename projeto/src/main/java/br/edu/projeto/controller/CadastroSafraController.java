@@ -189,10 +189,6 @@ public class CadastroSafraController implements Serializable
 
 	//Chamado pelo botão alterar da tabela
 	public void alterar() {
-		this.safra.setAno(null);
-		this.safra.setMesInicio(null);
-		this.safra.setMes_termino(null);
-		this.safra.setTipoCul("");
 	}
 
 		

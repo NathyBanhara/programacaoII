@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -117,6 +121,11 @@ public class Anotacao {
 	}
 
 	public void setDataTerm(LocalDate dataTerm) {
+		if (dataTerm.compareTo(dataInicio) < 0)
+		{
+			System.out.printf("\n\n\nA data de término precisa ser maior ou igual a data de início\n\n\n");
+			return;
+		}
 		this.dataTerm = dataTerm;
 	}
 	
