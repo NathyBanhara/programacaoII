@@ -113,7 +113,7 @@ public class Anotacao {
 	}
 
 	public void setDataTerm(LocalDate dataTerm) {
-		if (dataTerm.compareTo(dataInicio) < 0)
+		if (dataTerm != null && dataTerm.compareTo(dataInicio) < 0)
 		{
 			System.out.printf("\n\n\nA data de término precisa ser maior ou igual a data de início\n\n\n");
 			return;
