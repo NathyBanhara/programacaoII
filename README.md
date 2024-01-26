@@ -1,0 +1,1 @@
+A system designed to have two types of user permission: admin and customer. A user with admin permission can create customers. The customer can access a system in which he/she can store data regarding his/her lands and crop production.
